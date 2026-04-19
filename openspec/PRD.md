@@ -284,13 +284,14 @@ User → autenticación del sistema
 
 **Frontend / Backend**
 
-* Next.js
-* React
+* Next.js (App Router)
+* React 19
 * TypeScript
+* Tailwind CSS v4
 
 **ORM**
 
-* Prisma
+* Prisma con driver adapter
 
 **Base de datos**
 
@@ -298,7 +299,11 @@ User → autenticación del sistema
 
 **Auth**
 
-* sesión simple o NextAuth
+* Better Auth (autenticación con DNI)
+
+**UI Components**
+
+* shadcn/ui (radix-sera)
 
 **Deploy**
 

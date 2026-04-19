@@ -5,7 +5,7 @@ artifact_store:
   mode: hybrid
 
 context: |
-  Tech stack: Next.js + React + TypeScript + Tailwind CSS + Prisma + PostgreSQL
+  Tech stack: Next.js + React + TypeScript + Tailwind CSS v4 + Prisma + PostgreSQL
   Architecture: Next.js App Router
   Runtime: Node.js
   Package manager: npm
@@ -13,6 +13,8 @@ context: |
   Style: ESLint flat config
   Dev server: MUST always use port 3000
   Auth: Better Auth con DNI (no email)
+  UI Components: shadcn/ui (radix-sera style, RSC enabled)
+  Prisma: Driver adapter pattern (@prisma/adapter-pg)
 
 rules:
   proposal:

@@ -1,0 +1,104 @@
+# Guía de Contribución
+
+## ⚠️ Reglas Críticas
+
+**GIT:**
+- NEVER ejecutar `git reset` (hard, soft, mixed) sin permiso explícito
+- NEVER ejecutar `git rebase interactivo` sin permiso explícito
+- Antes de cualquier operación destructiva, STOP y PREGUNTAR
+
+**Code Review — REJECT si:**
+- Secrets/credentials hardcoded
+- console.log en código de producción
+- Error handling faltante
+
+## Workflow
+
+1. Crear branch desde main: `git checkout -b feature/nombre`
+2. Trabajar en la feature
+3. Commitear con conventional commits: `git commit -m "feat: description"`
+4. Push: `git push -u origin feature/nombre`
+5. Crear PR a main
+6. Code review
+7. Merge
+
+## Commits
+
+Usar Conventional Commits:
+
+| Tipo | Uso |
+|------|-----|
+| `feat:` | nueva funcionalidad |
+| `fix:` | bug fix |
+| `docs:` | documentación |
+| `style:` | formatting (sin cambio de código) |
+| `refactor:` | refactor |
+| `test:` | tests |
+| `chore:` | mantenimiento |
+
+## SDD (Spec-Driven Development)
+
+Para features significativas, usar el workflow SDD:
+
+```
+/sdd-init                          # Inicializar contexto
+/sdd-propose <change>              # Crear proposal
+/sdd-spec <change>                 # Escribir specs
+/sdd-design <change>               # Diseño técnico
+/sdd-tasks <change>                # Task breakdown
+/sdd-apply <change>                # Implementar
+/sdd-verify <change>               # Verificar
+/sdd-archive <change>              # Archivar
+```
+
+## Stack
+
+| Tecnología | Versión |
+|------------|---------|
+| Next.js | 16.2.4 |
+| React | 19.2.4 |
+| TypeScript | 5 |
+| Tailwind CSS | 4 |
+| Prisma | 7.7.0 |
+| better-auth | 1.6.5 |
+| shadcn | 4.3.0 |
+
+## Código
+
+- Function components únicamente
+- Server Components por defecto; Client Components con "use client"
+- TypeScript strict mode
+- No console.log en producción
+- Siempre error handling
+- Mensajes de error en español
+
+## UI Components
+
+Usar shadcn/ui para componentes base. No crear custom para:
+Button, Input, Select, Dialog, Dropdown, Card
+
+Agregar: `npx shadcn@latest add <componente>`
+
+## DB
+
+```bash
+npm run db:migrate    # Run migrations
+npm run db:seed       # Seed data
+npm run db:studio     # Prisma Studio
+npx prisma generate   # Generate client
+```
+
+## Memorias (Engram)
+
+Este proyecto usa Engram para memoria persistente:
+
+- `mem_save` — Guardar decisiones, bugs fixed, patterns establecidos
+- `mem_search` — Buscar decisiones pasadas
+- `mem_session_summary` — Resumen al cerrar sesión
+
+## Pull Requests
+
+- Título descriptivo siguiendo conventional commits
+- Descripción del qué y por qué
+- Link a issue si aplica
+- Screenshots para cambios de UI
