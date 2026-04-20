@@ -1,78 +1,133 @@
-# Guía de Contribución
+# Guia de Contribucion
 
-## ⚠️ Reglas Críticas
-**Dependencias**
-- Este proyecto usa el configurador de ecosistemas [Gentleman AI](https://github.com/Gentleman-Programming/gentle-ai). **Es obligatorio usarlo para mantener consistencia en convenciones, código y documentación.**
+## Objetivo
 
-**GIT:**
-- NEVER ejecutar `git reset` (hard, soft, mixed) sin permiso explícito
-- NEVER ejecutar `git rebase interactivo` sin permiso explícito
-- Antes de cualquier operación destructiva, STOP y PREGUNTAR
-- Iniciar GGA precommit hook para validar convenciones y de codigo
+Este proyecto usa el ecosistema [Gentleman AI](https://github.com/Gentleman-Programming/gentle-ai). Su uso es obligatorio para mantener consistencia de convenciones, codigo y documentacion.
 
+## Reglas Criticas
 
-**Code Review — REJECT si:**
-- Secrets/credentials hardcoded
-- console.log en código de producción
-- Error handling faltante
+### Git
 
+- Nunca ejecutar `git reset` (hard, soft o mixed) sin permiso explicito.
+- Nunca ejecutar `git rebase -i` sin permiso explicito.
+- Antes de cualquier operacion destructiva: detenerse y preguntar.
 
+### Review
 
-## Workflow
+Rechazar cambios si hay:
 
-1. Crear branch desde main: `git checkout -b feature/nombre`
-2. Trabajar en la feature
-3. Commitear con conventional commits: `git commit -m "feat: description"`
-4. Push: `git push -u origin feature/nombre`
-5. Crear PR a main
-6. Code review
-7. Merge
+- Secrets o credenciales hardcodeadas.
+- `console.log` en codigo de produccion.
+- Falta de manejo de errores.
 
-## Commits
+## Flujo de contribucion
 
-Usar Conventional Commits:
+1. Crear branch desde `main`.
+2. Implementar la feature/fix.
+3. Correr checks y validar cambios.
+4. Commitear usando Conventional Commits.
+5. Push de branch remoto.
+6. Abrir PR a `main`.
+7. Resolver review y mergear.
+
+### Comandos del flujo
+
+```bash
+git checkout -b feature/nombre
+git commit -m "feat: descripcion"
+git push -u origin feature/nombre
+```
+
+## Convencion de commits
 
 | Tipo | Uso |
 |------|-----|
-| `feat:` | nueva funcionalidad |
-| `fix:` | bug fix |
-| `docs:` | documentación |
-| `style:` | formatting (sin cambio de código) |
-| `refactor:` | refactor |
-| `test:` | tests |
-| `chore:` | mantenimiento |
+| `feat:` | Nueva funcionalidad |
+| `fix:` | Correccion de bug |
+| `docs:` | Documentacion |
+| `style:` | Formato sin cambios funcionales |
+| `refactor:` | Refactor |
+| `test:` | Tests |
+| `chore:` | Mantenimiento |
 
-# Pre-commit hook para validar convenciones:
-Inicair GGA para validar convenciones y código antes de cada commit:
-No funciona con powershell o cmd. Usar WSL o Git Bash.
+## Pre-commit (GGA)
 
-**Recomienndo usar Git Bash desde la terminnal de VSCode para evitar problemas con el hook.**
+Instalar el hook de GGA para validar convenciones y calidad antes de cada commit.
+
+Nota: en Windows, usar WSL o Git Bash (no PowerShell/CMD) para este flujo.
+
 ```bash
-gga install             # Install git hook
-# Edit .gga to set your PROVIDER
-# Create AGENTS.md with your coding standards
-# Done — every commit gets reviewed 🎉
+gga install
+# Editar .gga para configurar PROVIDER
+# Crear/actualizar AGENTS.md con estandares del proyecto
 ```
-Para mas informacion sobre GGA: ver [GGA Documentation](https://github.com/Gentleman-Programming/gentleman-guardian-angel)
+
+Mas informacion: [GGA Documentation](https://github.com/Gentleman-Programming/gentleman-guardian-angel).
+
+## Pull Requests
+
+- Titulo claro siguiendo Conventional Commits.
+- Descripcion del que y por que.
+- Link al issue (si aplica).
+- Screenshots para cambios de UI.
 
 ## SDD (Spec-Driven Development)
 
-Para features significativas, usar el workflow SDD:
+Para features significativas, usar:
 
+```text
+/sdd-init
+/sdd-propose <change>
+/sdd-spec <change>
+/sdd-design <change>
+/sdd-tasks <change>
+/sdd-apply <change>
+/sdd-verify <change>
+/sdd-archive <change>
 ```
-/sdd-init                          # Inicializar contexto
-/sdd-propose <change>              # Crear proposal
-/sdd-spec <change>                 # Escribir specs
-/sdd-design <change>               # Diseño técnico
-/sdd-tasks <change>                # Task breakdown
-/sdd-apply <change>                # Implementar
-/sdd-verify <change>               # Verificar
-/sdd-archive <change>              # Archivar
+
+## Estandares de codigo
+
+- Solo function components.
+- Server Components por defecto; Client Components solo con `"use client"`.
+- TypeScript en strict mode.
+- Sin `console.log` en produccion.
+- Manejo de errores obligatorio.
+- Mensajes de error en espanol.
+
+## UI Components
+
+Usar shadcn/ui para componentes base.
+
+```bash
+npx shadcn@latest add <componente>
 ```
 
-## Stack
+## Base de datos
 
-| Tecnología | Versión |
+```bash
+npm run db:migrate
+npm run db:seed
+npm run db:studio
+npx prisma generate
+```
+
+## Memorias (Engram)
+
+Sincronizar memorias al iniciar y cerrar trabajo:
+
+```bash
+engram sync --import
+engram sync
+```
+
+Primero ejecutar `engram sync --import` para traer contexto. Al final, ejecutar `engram sync` para exportar nuevas memorias del trabajo.
+
+Mas informacion: [Engram Documentation](https://github.com/Gentleman-Programming/engram#quick-start).
+
+## Stack de referencia
+
+| Tecnologia | Version |
 |------------|---------|
 | Next.js | 16.2.4 |
 | React | 19.2.4 |
@@ -81,49 +136,3 @@ Para features significativas, usar el workflow SDD:
 | Prisma | 7.7.0 |
 | better-auth | 1.6.5 |
 | shadcn | 4.3.0 |
-
-## Código
-
-- Function components únicamente
-- Server Components por defecto; Client Components con "use client"
-- TypeScript strict mode
-- No console.log en producción
-- Siempre error handling
-- Mensajes de error en español
-
-## UI Components
-
-Usar shadcn/ui para componentes base. No crear custom para:
-Button, Input, Select, Dialog, Dropdown, Card
-
-Agregar: `npx shadcn@latest add <componente>`
-
-## DB
-
-```bash
-npm run db:migrate    # Run migrations
-npm run db:seed       # Seed data
-npm run db:studio     # Prisma Studio
-npx prisma generate   # Generate client
-```
-
-## Memorias (Engram)
-
-Este proyecto usa Engram para memoria persistente:
-
-Guardar insights importantes para evitar repetir discusiones y mantener un historial de decisiones técnicas.
-subirlas al repositorio para que todos puedan acceder a ellas.
-```bash
-engram sync --import  # importar nuevos fragmentos
-engram sync # Exportar nuevas memorias como fragmento comprimido
-```
-**Primero ejecutar `engram sync --import` para traer nuevas memorias al proyecto, luego `engram sync` para exportar cualquier nueva memoria creada durante el desarrollo.**
-
-Para más información sobre Engram: ver [Engram Documentation](https://github.com/Gentleman-Programming/engram#quick-start)
-
-## Pull Requests
-
-- Título descriptivo siguiendo conventional commits
-- Descripción del qué y por qué
-- Link a issue si aplica
-- Screenshots para cambios de UI

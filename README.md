@@ -1,32 +1,40 @@
 # Menu QR Admin
 
-v0.1.0 · Next.js 16 + React 19 + TypeScript + Tailwind v4 + Prisma + PostgreSQL
+v0.1.0 - Next.js 16 + React 19 + TypeScript + Tailwind v4 + Prisma + PostgreSQL
 
-Sistema web de gestión de menú con QR para cafetería. Administradores crean y editen productos organizados por categorías, usuarios públicos las visualizan escaneando un QR.
+Sistema web de gestion de menu con QR para cafeteria. Los administradores gestionan categorias y productos; los usuarios finales visualizan el menu escaneando un QR.
 
 ## Stack
 
-| Capa | Tech |
-|------|------|
+| Capa | Tecnologia |
+|------|------------|
 | Framework | Next.js 16.2.4 + React 19.2.4 |
 | Estilos | Tailwind CSS v4 + shadcn/ui |
-| ORM / DB | Prisma v7 + PostgreSQL 18 |
-| Auth | Better Auth v1 (login con DNI) |
+| ORM / DB | Prisma 7.7.0 + PostgreSQL |
+| Auth | better-auth 1.6.5 (login con DNI) |
 
-## Setup
+## Requisitos
+
+- Node.js 20+
+- npm 10+
+- Docker (para levantar PostgreSQL local)
+
+## Setup local
 
 ```bash
 npm install
-cp .env.example .env        # configurar DATABASE_URL y BETTER_AUTH_SECRET
-docker-compose up -d        # iniciar PostgreSQL
+cp .env.example .env
+docker-compose up -d
 npm run db:migrate
-npm run db:seed             # opcional
-npm run dev                 # puerto 3000
+npm run db:seed
+npm run dev
 ```
+
+Aplicacion disponible en http://localhost:3000.
 
 ## Variables de entorno
 
-```
+```env
 DATABASE_URL="postgresql://qr_admin:qr_password@localhost:5432/menu_qr_admin"
 BETTER_AUTH_SECRET="min-32-chars"
 BETTER_AUTH_URL="http://localhost:3000"
@@ -36,52 +44,74 @@ SEED_ADMIN_PASSWORD_1="admin123"
 
 ## Scripts
 
-```bash
-npm run dev / build / start
-npm run db:migrate / db:seed / db:studio
-npm run lint
-```
+| Script | Descripcion |
+|--------|-------------|
+| npm run dev | Inicia entorno de desarrollo |
+| npm run build | Compila la app para produccion |
+| npm run start | Ejecuta build de produccion |
+| npm run lint | Ejecuta ESLint |
+| npm run db:migrate | Ejecuta migraciones de Prisma |
+| npm run db:seed | Carga datos semilla |
+| npm run db:studio | Abre Prisma Studio |
+| npm run test | Ejecuta tests una vez |
+| npm run test:watch | Ejecuta tests en modo watch |
+| npm run test:coverage | Ejecuta tests con cobertura |
 
 ## Modelo de datos
 
-```
-Category (nombre, orden)
-└── Product (nombre, price, available, orden)
+```text
+Category (name, order)
+└── Product (name, price, available, order)
 
 User (dni, password, role)
 ```
 
-## Estructura
+El campo `order` en `Category` y `Product` define el orden de visualizacion.
 
-```
+## Estructura del proyecto
+
+```text
+prisma/
+├── schema.prisma
+├── seed.ts
+└── migrations/
+
 src/
 ├── app/
-│   ├── (admin)/admin/      # dashboard, productos, categorías
-│   ├── (public)/menu/      # menú público (QR target)
-│   └── actions/            # Server Actions
-├── components/
-│   └── ui/                 # shadcn/ui
+│   ├── api/auth/[...all]/route.ts
+│   ├── globals.css
+│   ├── layout.tsx
+│   └── page.tsx
+├── components/ui/
+│   └── button.tsx
 ├── lib/
-│   ├── prisma.ts           # Prisma client
-│   ├── auth.ts             # Better Auth
-│   └── utils.ts            # Utilities
-└── generated/prisma/       # Prisma generated client
+│   ├── auth-client.ts
+│   ├── auth.ts
+│   ├── prisma.ts
+│   └── utils.ts
+└── __tests__/
+    ├── auth.test.ts
+    └── utils.test.ts
 ```
-
-## Admin Login
-
-- URL: `/admin/login`
-- DNI: `12345678` (default seed)
-- Password: `admin123`
 
 ## Troubleshooting
 
-**Prisma out of sync** → `npm run db:generate`
+- Prisma out of sync:
 
-**Auth no funciona** → verificar que `BETTER_AUTH_URL` coincida exactamente con la URL (sin slash final)
+  ```bash
+  npx prisma generate
+  ```
 
-**DB no conecta** → verificar `DATABASE_URL` y que el contenedor Docker esté corriendo (`docker-compose ps`)
+- Auth no funciona:
+  Verificar que `BETTER_AUTH_URL` coincida exactamente con la URL (sin slash final).
 
-## Contribución
+- DB no conecta:
+  Verificar `DATABASE_URL` y el contenedor con:
 
-Ver [CONTRIBUTING.md](CONTRIBUTING.md)
+  ```bash
+  docker-compose ps
+  ```
+
+## Contribucion
+
+Ver [CONTRIBUTING.md](CONTRIBUTING.md).
